@@ -1,7 +1,6 @@
 package de.johannes.game.ui;
 
 import de.johannes.Game;
-import de.johannes.Main;
 import de.johannes.curses.Curses;
 import de.johannes.curses.CursesConstants;
 import de.johannes.curses.Mouse;
@@ -9,7 +8,6 @@ import de.johannes.curses.util.ColorBuilder;
 import de.johannes.curses.util.Timer;
 import de.johannes.curses.window.components.Window;
 import de.johannes.game.entity.Player;
-import de.johannes.game.world.tiles.materials.Grass;
 import de.johannes.game.world.tiles.Material;
 
 public class GameWindow extends Window {
@@ -56,11 +54,13 @@ public class GameWindow extends Window {
         if(Game.instance().world.tileAt(x,y) != null && Game.instance().world.tileAt(x,y).material() != null) {
             Material mat = Game.instance().world.tileAt(x,y).material();
 
-            if(mouse.state == Mouse.BUTTON_1_CLICKED) {
-                //TODO Check if tile is breakable
-                Game.instance().player.inventory.addInventory(mat);
-                int index = Game.instance().world.tileIndex(x,y);
-                Game.instance().world.tiles.remove(index);
+            if(Game.instance().world.tileAt(x,y).distance(Game.instance().player.x(), Game.instance().player.y()) < Game.instance().player.range) {
+                if(mouse.state == Mouse.BUTTON_1_CLICKED) {
+                    //TODO Check if tile is breakable
+                    Game.instance().player.inventory.addInventory(mat);
+                    int index = Game.instance().world.tileIndex(x,y);
+                    Game.instance().world.tiles.remove(index);
+                }
             }
         }
 

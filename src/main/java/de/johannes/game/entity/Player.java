@@ -16,11 +16,13 @@ public class Player extends Entity {
 
     public Inventory inventory;
     public float fov;
+    public float range;
 
     public Player() {
         super("o", new ColorBuilder().defineForeground("#A0F000").defineBackground("#7E4A00").build());
         this.inventory = new Inventory();
-        this.fov = 6F;
+        this.fov = 2.5F;
+        this.range = 6F;
     }
 
     @Override

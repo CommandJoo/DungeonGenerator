@@ -23,4 +23,8 @@ public abstract class Structure {
         }
     }
 
+    public boolean checkCoords(int x, int y) {
+        return this.x == x && this.y == y;
+    }
+
 }

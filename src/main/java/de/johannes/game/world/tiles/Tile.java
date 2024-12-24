@@ -38,4 +38,8 @@ public class Tile {
         window.drawString(window.width/2+(x-player.x()), window.height/2+(y-player.y()), s, color);
     }
 
+    public float distance(int x, int y) {
+        return (float) Math.sqrt(((x-this.x)*(x-this.x))+((y-this.y)*(y-this.y)));
+    }
+
 }

@@ -91,8 +91,8 @@ public class World {
     }
 
     public void draw(GameWindow window, Player player) {
-        int hiddenFloor = new ColorBuilder().defineForeground("#346475").defineBackground("#132344").build();
-        int hiddenColor = new ColorBuilder().defineForeground("#4434A5").defineBackground("#132344").build();
+        int hiddenFloor = new ColorBuilder().defineForeground("#346475").defineBackground("#010135").build();
+        int hiddenColor = new ColorBuilder().defineForeground("#4434A5").defineBackground("#010135").build();
         try {
             drawTileList(this.floor, window, player, hiddenFloor);
             drawTileList(this.tiles, window, player, hiddenColor);
@@ -116,13 +116,14 @@ public class World {
 
     public void drawTileList(List<Tile> tiles, Window window, Player player, int hiddenColor) {
         float viewRadius = Math.min(player.fov, 10);
-        double horizontalShrink = 10 / (viewRadius == 10 ? 10 : Math.min(viewRadius * 1.5, 10));
+        double horizontalShrink = 10F / viewRadius;
+        double verticalShrink = 10F / (viewRadius == 10 ? 10 : Math.min(viewRadius * 1.5, 10));
         for (Tile tile : tiles) {
             if (tile.material() == null) continue;
-            if (10 / viewRadius * (tile.x() - player.x()) > -window.width / 2f + 1 &&
-                    10 / viewRadius * (tile.x() - player.x()) < window.width / 2f &&
-                    horizontalShrink * (tile.y() - player.y()) > -window.height / 2f + 1 &&
-                    horizontalShrink * (tile.y() - player.y()) < window.height / 2f
+            if (horizontalShrink * (tile.x() - player.x()) > -window.width / 2f + 1 &&
+                    horizontalShrink * (tile.x() - player.x()) < window.width / 2f &&
+                    verticalShrink * (tile.y() - player.y()) > -window.height / 2f + 1 &&
+                    verticalShrink * (tile.y() - player.y()) < window.height / 2f
             )
             {
                 tile.draw(window, player);
@@ -160,7 +161,7 @@ public class World {
 
     public Structure structureAt(int x, int y) {
         for(Structure structure : this.structures) {
-            if(structure.x == x && structure.y == y) return structure;
+            if(structure.checkCoords(x,y)) return structure;
         }
         return null;
     }

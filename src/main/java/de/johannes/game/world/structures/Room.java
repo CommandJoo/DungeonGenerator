@@ -23,9 +23,9 @@ public class Room extends Structure{
 
     @Override
     public void build(World world) {
-        if(level < 6) {
+        if(level < 8) {
             fillRect(world, false, x-(sizeX+1), y-(sizeY/2+1), 2*(sizeX+1)+1, sizeY+2, null);
-            fillRect(world, true, x-(sizeX+1), y-(sizeY/2+1), 2*(sizeX+1)+1, sizeY+2, new Floor());
+            fillRect(world, true, x-(sizeX+1), y-(sizeY/2+1), 2*(sizeX+1)+1, sizeY+2+1, new Floor());
 
             fillRect(world, false, x-(sizeX+1), y-(sizeY/2+1), 2*(sizeX+1), 1, new Wall(Wall.WallType.HORIZONTAL));
             fillRect(world, false, x-(sizeX+1), y+(sizeY/2+1), 2*(sizeX+1), 1, new Wall(Wall.WallType.HORIZONTAL));
@@ -37,7 +37,7 @@ public class Room extends Structure{
             world.setTile(x+(sizeX+1), y-(sizeY/2+1), new Wall(Wall.WallType.UPPER_RIGHT));
             world.setTile(x-(sizeX+1), y+(sizeY/2+1), new Wall(Wall.WallType.LOWER_LEFT));
             world.setTile(x+(sizeX+1), y+(sizeY/2+1), new Wall(Wall.WallType.LOWER_RIGHT));
-            if(level+1 < 6) {
+            if(level+1 < 8) {
                 for(int i = 0; i < new Random().nextInt(4)+1; i++) {
                     int a = new Random().nextInt(4);
                     if(a==0) {
