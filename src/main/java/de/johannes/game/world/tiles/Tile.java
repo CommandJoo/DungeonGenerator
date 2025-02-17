@@ -1,6 +1,7 @@
 package de.johannes.game.world.tiles;
 
-import de.johannes.curses.window.components.Window;
+import de.johannes.Game;
+import de.johannes.curses.ui.components.Window;
 import de.johannes.game.entity.Player;
 
 public class Tile {
@@ -26,16 +27,33 @@ public class Tile {
         return y;
     }
 
+    public int renderX() {
+        return x* Game.TILE_WIDTH;
+    }
+
+    public int renderY() {
+        return y* Game.TILE_HEIGHT;
+    }
+
     public void draw(Window window, Player player) {
-        drawAt(window, player, x,y,material.character(), material.color());
+        drawAt(window, player, renderX(),renderY(), material,material.color());
     }
 
     public void draw(Window window, Player player, int color) {
-        drawAt(window, player, x,y,material.character(), color);
+        drawAt(window, player, renderX(),renderY(), material, color);
     }
 
-    public void drawAt(Window window, Player player, int x, int y, String s, int color) {
-        window.drawString(window.width/2+(x-player.x()), window.height/2+(y-player.y()), s, color);
+    public void drawAt(Window window, Player player, int x, int y, Material mat, int color) {
+        for(int i = 0; i < Game.TILE_WIDTH; i++) {
+            for(int j = 0; j < Game.TILE_HEIGHT; j++) {
+                int rX = window.width()/2+(x-player.renderX())+i;
+                int rY = window.height()/2+(y-player.renderY())+j;
+                if(rX > 0 && rX < window.width() &&
+                        rY > 0 && rY < window.height()) {
+                    window.drawString(rX, rY, mat.texture(i,j), color);
+                }
+            }
+        }
     }
 
     public float distance(int x, int y) {

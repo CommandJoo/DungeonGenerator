@@ -4,13 +4,15 @@ import de.johannes.Game;
 import de.johannes.curses.Curses;
 import de.johannes.curses.CursesConstants;
 import de.johannes.curses.Mouse;
-import de.johannes.curses.window.components.Window;
+import de.johannes.curses.ui.base.BoxComponentBuilder;
+import de.johannes.curses.ui.components.Text;
+import de.johannes.curses.ui.components.Window;
 import de.johannes.game.entity.Player;
 
 public class UIWindow extends Window {
 
     public UIWindow() {
-        super(null, 0, 0, 21, Curses.height()-1, CursesConstants.WHITE, "Console Game", false);
+        super(null, "Console Game", 0, 0, 21, Curses.height()-1, CursesConstants.WHITE, CursesConstants.WHITE);
     }
 
     @Override
@@ -18,7 +20,14 @@ public class UIWindow extends Window {
         for(int x = 0; x < 16; x++) {
             int row = x%4;
             int col = x/4;
-            addComponent(1000+x, new Slot(this, x, 1+row+(row*4), 1+col+(col*2)));
+            Slot slot = new BoxComponentBuilder<Slot>()
+                    .parent(this)
+                    .at(1+row+(row*4), 1+col+(col*2))
+                    .bounds(4,2)
+                    .color(CursesConstants.WHITE)
+                    .build(Slot::new)
+                    .index(x);
+            addComponent(1000+x, slot);
         }
     }
 
@@ -32,13 +41,14 @@ public class UIWindow extends Window {
             Slot slot = ((Slot) getComponent(1000 + i));
             slot.setItem(item);
         }
-        drawString( 1, 13, "$cf{#FF9999}X:"+Game.instance().player.x(), CursesConstants.WHITE);
-        drawString( 1, 14, "$cf{#9999FF}Y:"+Game.instance().player.y(), CursesConstants.WHITE);
+        Text.of("Y:"+Game.instance().player.y()).parent(this).at(1,14).setColor("#9999FF").draw();
+        Text.of("X:"+Game.instance().player.x()).parent(this).at(1,13).setColor("#FF9999").draw();
 
         try {
             drawString(1, 16, "Selected: "+Game.instance().player.inventory.getItem(Game.instance().player.inventory.selected()).material().getClass().getSimpleName(), CursesConstants.WHITE);
         } catch(Exception _) {
         }
+
     }
 
     @Override

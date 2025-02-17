@@ -1,6 +1,7 @@
 package de.johannes.game.entity;
 
 import de.johannes.Game;
+import de.johannes.Logger;
 import de.johannes.curses.util.ColorBuilder;
 import de.johannes.game.ui.GameWindow;
 import de.johannes.game.world.tiles.Material;
@@ -17,17 +18,23 @@ public class Player extends Entity {
     public Inventory inventory;
     public float fov;
     public float range;
+    public float speed;
 
     public Player() {
-        super("o", new ColorBuilder().defineForeground("#A0F000").defineBackground("#7E4A00").build());
+        super("o", new ColorBuilder().defineForeground("#7E4A00").defineBackground("#7E4A00").build());
         this.inventory = new Inventory();
-        this.fov = 2.5F;
+        this.fov = 8F;
         this.range = 6F;
+        this.speed = 1;
     }
 
     @Override
     public void draw(GameWindow window) {
-        window.drawString(window.width/2,window.height/2, character(), color());
+        for(int i = 0; i < Game.TILE_WIDTH; i++) {
+            for(int j = 0; j < Game.TILE_HEIGHT; j++) {
+                window.drawString(window.width()/2+i,window.height()/2+j, character(), color());
+            }
+        }
     }
 
     @Override
@@ -38,16 +45,16 @@ public class Player extends Entity {
         World world = Game.instance().world;
         switch (c) {
             case 'w':
-                if(y()-1>-world.sizeY-1) Game.instance().player.move(0, -1);
+                if(y()-1>-world.sizeY-1) Game.instance().player.move(0, -1*speed);
                 break;
             case 's':
-                if(y()+1<world.sizeY) Game.instance().player.move(0, 1);
+                if(y()+1<world.sizeY) Game.instance().player.move(0, 1*speed);
                 break;
             case 'a':
-                if(x()-1>-world.sizeX-1) Game.instance().player.move(-1, 0);
+                if(x()-1>-world.sizeX-1) Game.instance().player.move(-1*speed, 0);
                 break;
             case 'd':
-                if(x()+1<world.sizeX) Game.instance().player.move(1, 0);
+                if(x()+1<world.sizeX) Game.instance().player.move(1*speed, 0);
                 break;
         }
     }

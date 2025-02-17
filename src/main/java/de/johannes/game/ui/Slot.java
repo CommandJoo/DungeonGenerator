@@ -1,32 +1,44 @@
 package de.johannes.game.ui;
 
 import de.johannes.Game;
+import de.johannes.curses.Curses;
 import de.johannes.curses.CursesConstants;
 import de.johannes.curses.Mouse;
+import de.johannes.curses.ui.base.BoxComponent;
+import de.johannes.curses.ui.base.Component;
 import de.johannes.curses.util.ColorBuilder;
 import de.johannes.curses.util.Timer;
-import de.johannes.curses.window.Component;
 import de.johannes.game.entity.Player;
-import de.johannes.game.world.tiles.materials.Wood;
 
-public class Slot extends Component {
+public class Slot extends BoxComponent {
 
     private int index;
     private Player.Item item;
 
-    public Slot(UIWindow parent, int index, int x, int y) {
-        super(parent, x, y, 4, 2, CursesConstants.WHITE, true);
+    public Slot() {
+    }
+
+    public Slot index(int index) {
         this.index = index;
+        return this;
     }
 
     private final int selectedColor = new ColorBuilder().defineForeground("#5555AA").build();
 
     @Override
+    public void init() {}
+
+    @Override
     public void draw() {
-        drawBox(-1);
+        if(index == Game.instance().player.inventory.selected()) {
+            color = CursesConstants.DARK_CYAN;
+        }else {
+            color = CursesConstants.WHITE;
+        }
+        Curses.clearBox(x(),y(),width(),height(), color());
+        drawBox();
         if (item != null && item.material() != null) {
-            drawBox(index == Game.instance().player.inventory.selected() ? selectedColor : -1);
-            drawString(1, 1, " " + item.material().character() + " ", item.material().color());
+            drawString(1, 1, " " + item.material().nonempty() + " ", item.material().color());
             drawString(4, 2, "" + item.count(), color);
 
         }

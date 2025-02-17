@@ -1,11 +1,8 @@
 package de.johannes.game.world.structures;
 
 import de.johannes.game.world.World;
-import de.johannes.game.world.tiles.Material;
 import de.johannes.game.world.tiles.materials.Floor;
-import de.johannes.game.world.tiles.materials.Grass;
-import de.johannes.game.world.tiles.materials.Leaf;
-import de.johannes.game.world.tiles.materials.Wall;
+import de.johannes.game.world.tiles.materials.Rock;
 
 import java.util.Random;
 
@@ -27,16 +24,16 @@ public class Room extends Structure{
             fillRect(world, false, x-(sizeX+1), y-(sizeY/2+1), 2*(sizeX+1)+1, sizeY+2, null);
             fillRect(world, true, x-(sizeX+1), y-(sizeY/2+1), 2*(sizeX+1)+1, sizeY+2+1, new Floor());
 
-            fillRect(world, false, x-(sizeX+1), y-(sizeY/2+1), 2*(sizeX+1), 1, new Wall(Wall.WallType.HORIZONTAL));
-            fillRect(world, false, x-(sizeX+1), y+(sizeY/2+1), 2*(sizeX+1), 1, new Wall(Wall.WallType.HORIZONTAL));
+            fillRect(world, false, x-(sizeX+1), y-(sizeY/2+1), 2*(sizeX+1), 1, new Rock());
+            fillRect(world, false, x-(sizeX+1), y+(sizeY/2+1), 2*(sizeX+1), 1, new Rock());
 
-            fillRect(world, false, x-(sizeX+1), y-(sizeY/2+1), 1, sizeY+2, new Wall(Wall.WallType.VERTICAL));
-            fillRect(world, false, x+(sizeX+1), y-(sizeY/2+1), 1, sizeY+2, new Wall(Wall.WallType.VERTICAL));
+            fillRect(world, false, x-(sizeX+1), y-(sizeY/2+1), 1, sizeY+2, new Rock());
+            fillRect(world, false, x+(sizeX+1), y-(sizeY/2+1), 1, sizeY+2, new Rock());
 
-            world.setTile(x-(sizeX+1), y-(sizeY/2+1), new Wall(Wall.WallType.UPPER_LEFT));
-            world.setTile(x+(sizeX+1), y-(sizeY/2+1), new Wall(Wall.WallType.UPPER_RIGHT));
-            world.setTile(x-(sizeX+1), y+(sizeY/2+1), new Wall(Wall.WallType.LOWER_LEFT));
-            world.setTile(x+(sizeX+1), y+(sizeY/2+1), new Wall(Wall.WallType.LOWER_RIGHT));
+            world.setTile(x-(sizeX+1), y-(sizeY/2+1), new Rock());
+            world.setTile(x+(sizeX+1), y-(sizeY/2+1), new Rock());
+            world.setTile(x-(sizeX+1), y+(sizeY/2+1), new Rock());
+            world.setTile(x+(sizeX+1), y+(sizeY/2+1), new Rock());
             if(level+1 < 8) {
                 for(int i = 0; i < new Random().nextInt(4)+1; i++) {
                     int a = new Random().nextInt(4);

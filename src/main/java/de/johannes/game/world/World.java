@@ -1,7 +1,7 @@
 package de.johannes.game.world;
 
+import de.johannes.curses.ui.components.Window;
 import de.johannes.curses.util.ColorBuilder;
-import de.johannes.curses.window.components.Window;
 import de.johannes.game.entity.Entity;
 import de.johannes.game.entity.Player;
 import de.johannes.game.ui.GameWindow;
@@ -91,20 +91,19 @@ public class World {
     }
 
     public void draw(GameWindow window, Player player) {
-        int hiddenFloor = new ColorBuilder().defineForeground("#346475").defineBackground("#010135").build();
-        int hiddenColor = new ColorBuilder().defineForeground("#4434A5").defineBackground("#010135").build();
+        int hiddenFloor = new ColorBuilder().defineForeground("#332332").defineBackground("#212121").build();
+        int hiddenColor = new ColorBuilder().defineForeground("#333332").defineBackground("#212121").build();
         try {
             drawTileList(this.floor, window, player, hiddenFloor);
             drawTileList(this.tiles, window, player, hiddenColor);
             player.draw(window);
             for(Entity entity : this.entities) {
-                if(entity.isAlive() &&
-                ((entity.x() - player.x()) > -window.width / 2f + 1 &&
-                        (entity.x() - player.x()) < window.width / 2f &&
-                        (entity.y() - player.y()) > -window.height / 2f + 1 &&
-                        (entity.y() - player.y()) < window.height / 2f
+                if (entity.isAlive() && (entity.renderX() - player.renderX()) > -window.width() / 2f&&
+                        (entity.renderX() - player.renderX()) < window.width() / 2f &&
+                        (entity.renderY() - player.renderY()) > -window.height() / 2f &&
+                        (entity.renderY() - player.renderY()) < window.height() / 2f
                 )
-                ) {
+                {
                     entity.draw(window);
                 }else {
                     this.removeEntity(entity);
@@ -120,17 +119,18 @@ public class World {
         double verticalShrink = 10F / (viewRadius == 10 ? 10 : Math.min(viewRadius * 1.5, 10));
         for (Tile tile : tiles) {
             if (tile.material() == null) continue;
-            if (horizontalShrink * (tile.x() - player.x()) > -window.width / 2f + 1 &&
-                    horizontalShrink * (tile.x() - player.x()) < window.width / 2f &&
-                    verticalShrink * (tile.y() - player.y()) > -window.height / 2f + 1 &&
-                    verticalShrink * (tile.y() - player.y()) < window.height / 2f
+
+            if (horizontalShrink * (tile.renderX() - player.renderX()) > -window.width() / 2f &&
+                    horizontalShrink * (tile.renderX() - player.renderX()) < window.width() / 2f &&
+                    verticalShrink * (tile.renderY() - player.renderY()) > -window.height() / 2f &&
+                    verticalShrink * (tile.renderY() - player.renderY()) < window.height() / 2f
             )
             {
                 tile.draw(window, player);
-            } else if ((tile.x() - player.x()) > -window.width / 2f + 1 &&
-                    (tile.x() - player.x()) < window.width / 2f &&
-                    (tile.y() - player.y()) > -window.height / 2f + 1 &&
-                    (tile.y() - player.y()) < window.height / 2f
+            } else if ((tile.renderX() - player.renderX()) > -window.width() / 2f&&
+                    (tile.renderX() - player.renderX()) < window.width() / 2f &&
+                    (tile.renderY() - player.renderY()) > -window.height() / 2f &&
+                    (tile.renderY() - player.renderY()) < window.height() / 2f
             )
             {
                 tile.draw(window, player, hiddenColor);
